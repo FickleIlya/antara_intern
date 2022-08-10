@@ -47,17 +47,17 @@ class StoreItem:
 
     STORE_ITEM = "/item/"
 
-    def post_item(self, body: dict, name: str):
-        response = self.client.custom_request("POST", f"{self.url}{self.STORE_ITEM}{name}", json=body)
+    def post_item(self, body: dict, name: str, headers: dict):
+        response = self.client.custom_request("POST", f"{self.url}{self.STORE_ITEM}{name}", json=body, headers=headers)
 
         return ResponseModel(status=response.status_code, response=response.json())
 
-    def change_item(self, body: dict, name: str):
-        response = self.client.custom_request("PUT", f"{self.url}{self.STORE_ITEM}{name}", json=body)
+    def change_item(self, body: dict, name: str, headers: dict):
+        response = self.client.custom_request("PUT", f"{self.url}{self.STORE_ITEM}{name}", json=body, headers=headers)
 
         return ResponseModel(status=response.status_code, response=response.json())
 
-    def get_item(self, name: str):
-        response = self.client.custom_request("GET", f"{self.url}{self.STORE_ITEM}{name}")
+    def get_item(self, name: str, headers: dict):
+        response = self.client.custom_request("GET", f"{self.url}{self.STORE_ITEM}{name}", headers=headers)
 
         return ResponseModel(status=response.status_code, response=response.json())
