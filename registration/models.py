@@ -27,7 +27,7 @@ class Item:
         image = fake.text()
 
         return {
-            "price": price,
+            "price": str(123123),
             "store_id": store_id,
             "description": description,
             "image": image
@@ -35,5 +35,5 @@ class Item:
 
     @staticmethod
     def random_name():
-        name = fake.name()
+        name = fake.word()
         return name
