@@ -4,17 +4,20 @@ from jsonschema import validate
 from registration.request import Client
 from registration.models import ResponseModel, RegisterUser
 from schemas.registration import valid_schema
-
+from typing import Optional
 logger = logging.getLogger("api")
 
 
-class Register:
+class APIActions:
+    POST_REGISTER_USER = '/register'
+    AUTH_USER = '/auth'
+    STORE_ITEM = "/item/"
+
     def __init__(self, url):
         self.url = url
         self.client = Client()
 
-    POST_REGISTER_USER = '/register'
-
+    # Register
     def register_user(self, body: dict, schema: dict):
         """
         https://app.swaggerhub.com/apis-docs/berpress/flask-rest-api/1.0.0#/register/regUser
@@ -24,30 +27,17 @@ class Register:
         logger.info(response.text)
         return ResponseModel(status=response.status_code, response=response.json())
 
+    # Auth
+    def get_access_token(self, body: Optional[dict] = None):
+        if not body:
+            body = RegisterUser.random()
+            self.register_user(body=body, schema=valid_schema)
 
-class Auth:
-    def __init__(self, url):
-        self.url = url
-        self.client = Client()
+        response = self.client.custom_request("POST", f"{self.url}{self.AUTH_USER}", json=body)
+        return response.json()["access_token"]
 
-    POST_REGISTERED_USER = '/auth'
-
-    def get_access_token(self, register_url: str):
-        body = RegisterUser.random()
-        Register(url=register_url).register_user(body=body, schema=valid_schema)
-        response = self.client.custom_request("POST", f"{self.url}{self.POST_REGISTERED_USER}", json=body)
-        return response
-
-
-class StoreItem:
-
-    def __init__(self, url):
-        self.url = url
-        self.client = Client()
-
-    STORE_ITEM = "/item/"
-
-    def post_item(self, body: dict, name: str, headers: dict):
+    # StoreItem
+    def create_item(self, body: dict, name: str, headers: dict):
         response = self.client.custom_request("POST", f"{self.url}{self.STORE_ITEM}{name}", json=body, headers=headers)
 
         return ResponseModel(status=response.status_code, response=response.json())
