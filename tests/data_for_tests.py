@@ -69,7 +69,7 @@ EVENTS = [
 
 EVENTS_GROUP_BY_DATE = [
     {
-        "2022-08-24T01:21:09": [
+        "2022-08-24": [
             {
                 "type": "private",
                 "date": "2022-08-24T01:21:09",
@@ -82,11 +82,7 @@ EVENTS_GROUP_BY_DATE = [
                     "Scott"
                 ],
                 "place": "interest"
-            }
-        ]
-    },
-    {
-        "2022-08-24T21:22:07": [
+            },
             {
                 "type": "corporate",
                 "date": "2022-08-24T21:22:07",
@@ -103,7 +99,7 @@ EVENTS_GROUP_BY_DATE = [
         ]
     },
     {
-        "2022-08-31T15:11:01": [
+        "2022-08-31": [
             {
                 "type": "private",
                 "date": "2022-08-31T15:11:01",
@@ -120,7 +116,7 @@ EVENTS_GROUP_BY_DATE = [
         ]
     },
     {
-        "2022-09-10T17:24:56": [
+        "2022-09-10": [
             {
                 "type": "meeting",
                 "date": "2022-09-10T17:24:56",

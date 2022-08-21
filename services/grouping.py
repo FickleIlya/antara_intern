@@ -1,3 +1,4 @@
+from datetime import datetime
 from itertools import groupby
 
 
@@ -7,7 +8,7 @@ class EventGroup:
         result = [{
             date: [event.to_dict() for event in group if event.event_type.value != "other"]} for date, group
             in groupby(sorted(events,
-                              key=lambda event: event.event_date), lambda event: event.event_date)
+                              key=lambda event: event.event_date), lambda event: event.event_date.date())
         ]
         return result
 

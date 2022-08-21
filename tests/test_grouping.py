@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pytest
 from datetime import datetime
 
@@ -15,7 +17,7 @@ def events():
 
 @pytest.fixture
 def events_grouped_by_date():
-    events_by_date = [{datetime.fromisoformat(date): events for date, events in group.items()}
+    events_by_date = [{datetime.fromisoformat(date).date(): events for date, events in group.items()}
                       for group in EVENTS_GROUP_BY_DATE]
     yield events_by_date
 
@@ -31,7 +33,9 @@ def events_grouped_by_type():
 class TestGroup:
 
     def test_group_by_date(self, events, events_grouped_by_date):
+        # pprint(events_grouped_by_date)
         group = EventGroup.group_by_date(events=events)
+        pprint(group)
         assert group == events_grouped_by_date
 
     def test_group_by_type(self, events, events_grouped_by_type):
