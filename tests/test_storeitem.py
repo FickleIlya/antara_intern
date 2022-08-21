@@ -1,5 +1,5 @@
+from factory.item_factory import ItemFactory
 from registration.api import APIActions
-from registration.models import Item
 
 URL = "https://stores-tests-api.herokuapp.com"
 
@@ -12,38 +12,41 @@ class TestStoreItem:
     }
 
     ITEM = None
-    ITEM_NAME = None
 
     def test_add_new_item(self):
 
-        TestStoreItem.ITEM = Item.random_body()
-        TestStoreItem.ITEM_NAME = Item.random_name()
-        response = APIActions(url=URL).create_item(body=TestStoreItem.ITEM, name=TestStoreItem.ITEM_NAME,
+        TestStoreItem.ITEM = ItemFactory().create_item()
+        body = TestStoreItem.ITEM.as_dict()
+        response = APIActions(url=URL).create_item(body=body, name=TestStoreItem.ITEM.name,
                                                    headers=self.HEADERS)
 
         assert response.status == 201
-        assert response.response.get("name") == TestStoreItem.ITEM_NAME
-        assert response.response.get("price") == float(TestStoreItem.ITEM["price"])
-        assert response.response.get("description") == TestStoreItem.ITEM["description"]
-        assert response.response.get("image") == TestStoreItem.ITEM["image"]
+        assert response.response.get("itemID")
+        assert response.response.get("name") == TestStoreItem.ITEM.name
+        assert response.response.get("price") == float(body["price"])
+        assert response.response.get("description") == body["description"]
+        assert response.response.get("image") == body["image"]
 
     def test_change_item(self):
-        TestStoreItem.ITEM_NAME = Item.random_name()
-        response = APIActions(url=URL).create_item(body=TestStoreItem.ITEM, name=TestStoreItem.ITEM_NAME,
+        TestStoreItem.ITEM.name = ItemFactory().new_name()
+        body = TestStoreItem.ITEM.as_dict()
+        response = APIActions(url=URL).create_item(body=body, name=TestStoreItem.ITEM.name,
                                                    headers=self.HEADERS)
 
         assert response.status == 201
-        assert response.response.get("name") == TestStoreItem.ITEM_NAME
-        assert response.response.get("price") == float(TestStoreItem.ITEM["price"])
-        assert response.response.get("description") == TestStoreItem.ITEM["description"]
-        assert response.response.get("image") == TestStoreItem.ITEM["image"]
+        assert response.response.get("itemID")
+        assert response.response.get("name") == TestStoreItem.ITEM.name
+        assert response.response.get("price") == float(body["price"])
+        assert response.response.get("description") == body["description"]
+        assert response.response.get("image") == body["image"]
 
     def test_get_item(self):
-        response = APIActions(url=URL).get_item(name=TestStoreItem.ITEM_NAME, headers=self.HEADERS)
+        body = TestStoreItem.ITEM.as_dict()
+        response = APIActions(url=URL).get_item(name=TestStoreItem.ITEM.name, headers=self.HEADERS)
 
         assert response.status == 200
-        assert response.response.get("name") == TestStoreItem.ITEM_NAME
-        assert response.response.get("price") == float(TestStoreItem.ITEM["price"])
-        assert response.response.get("description") == TestStoreItem.ITEM["description"]
-        assert response.response.get("image") == TestStoreItem.ITEM["image"]
-
+        assert response.response.get("itemID")
+        assert response.response.get("name") == TestStoreItem.ITEM.name
+        assert response.response.get("price") == float(body["price"])
+        assert response.response.get("description") == body["description"]
+        assert response.response.get("image") == body["image"]

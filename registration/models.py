@@ -34,8 +34,7 @@ class Item:
 
     def as_dict(self):
         return {
-            'name': self._name,
-            'price': self._price,
+            'price': str(self._price),
             'store_id':  self._store_id,
             'description': self._description,
             'image': self._image
@@ -60,3 +59,7 @@ class Item:
     @property
     def image(self):
         return self._image
+
+    @name.setter
+    def name(self, value):
+        self._name = value
